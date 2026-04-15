@@ -1,8 +1,5 @@
 namespace AlchemyGame.Models;
 
-/// <summary>
-/// Описывает один игровой элемент (Огонь, Вода, Пар и т.д.)
-/// </summary>
 public class Element
 {
     public string Id       { get; init; } = "";
