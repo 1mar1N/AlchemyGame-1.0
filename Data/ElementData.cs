@@ -108,10 +108,10 @@ public static class ElementData
         ["universe"]  = new() { Id="universe",  Name="Вселенная",      Category="Космос",        Emoji="🌌", Color="#1A237E" },
     };
 
-    // ── 92 рецепта (уникальные пары) ─────────────────────────────────────
+    // ── 92 рецепта (уникальные пары) 
     public static readonly List<Recipe> Recipes = new()
     {
-        // ── БАЗОВЫЕ (10) ──────────────────────────────────────────────────
+        // ── БАЗОВЫЕ (10) 
         new() { InputA="fire",      InputB="water",      ResultId="steam"       },
         new() { InputA="water",     InputB="earth",      ResultId="mud"         },
         new() { InputA="fire",      InputB="earth",      ResultId="lava"        },
@@ -123,7 +123,7 @@ public static class ElementData
         new() { InputA="air",       InputB="air",        ResultId="wind"        },
         new() { InputA="fire",      InputB="fire",       ResultId="energy"      },
 
-        // ── ПОГОДА (8) ────────────────────────────────────────────────────
+        // ── ПОГОДА (8) 
         new() { InputA="cloud",     InputB="water",      ResultId="rain"        },
         new() { InputA="cloud",     InputB="air",        ResultId="storm"       },
         new() { InputA="steam",     InputB="air",        ResultId="fog"         },
@@ -133,7 +133,7 @@ public static class ElementData
         new() { InputA="snow",      InputB="sun",        ResultId="water"       },
         new() { InputA="wind",      InputB="water",      ResultId="ice"         },
 
-        // ── ПРИРОДА — МИНЕРАЛЫ (12) ───────────────────────────────────────
+        // ── ПРИРОДА — МИНЕРАЛЫ (12) 
         new() { InputA="mud",       InputB="fire",       ResultId="stone"       },
         new() { InputA="lava",      InputB="water",      ResultId="stone"       },
         new() { InputA="lava",      InputB="earth",      ResultId="volcano"     },
@@ -147,14 +147,14 @@ public static class ElementData
         new() { InputA="glass",     InputB="stone",      ResultId="diamond"     },
         new() { InputA="ocean",     InputB="sun",        ResultId="salt"        },
 
-        // ── ЛАНДШАФТ (5) ──────────────────────────────────────────────────
+        // ── ЛАНДШАФТ (5) 
         new() { InputA="ocean",     InputB="fire",       ResultId="steam"       },
         new() { InputA="ocean",     InputB="earth",      ResultId="swamp"       },
         new() { InputA="mud",       InputB="plant",      ResultId="swamp"       },
         new() { InputA="lava",      InputB="air",        ResultId="smoke"       },
         new() { InputA="volcano",   InputB="water",      ResultId="stone"       },
 
-        // ── РАСТЕНИЯ (10) ─────────────────────────────────────────────────
+        // ── РАСТЕНИЯ (10) 
         new() { InputA="rain",      InputB="earth",      ResultId="plant"       },
         new() { InputA="plant",     InputB="earth",      ResultId="tree"        },
         new() { InputA="tree",      InputB="fire",       ResultId="coal"        },
@@ -166,7 +166,7 @@ public static class ElementData
         new() { InputA="plant",     InputB="sun",        ResultId="wheat"       },
         new() { InputA="wood",      InputB="fire",       ResultId="coal"        },
 
-        // ── ЖИВОТНЫЕ И ЖИЗНЬ (9) ─────────────────────────────────────────
+        // ── ЖИВОТНЫЕ И ЖИЗНЬ (9) 
         new() { InputA="swamp",     InputB="energy",     ResultId="life"        },
         new() { InputA="life",      InputB="ocean",      ResultId="fish"        },
         new() { InputA="life",      InputB="air",        ResultId="bird"        },
@@ -177,7 +177,7 @@ public static class ElementData
         new() { InputA="insect",    InputB="flower",     ResultId="honey"       },
         new() { InputA="beast",     InputB="water",      ResultId="milk"        },
 
-        // ── ЧЕЛОВЕК И ЦИВИЛИЗАЦИЯ (13) ────────────────────────────────────
+        // ── ЧЕЛОВЕК И ЦИВИЛИЗАЦИЯ (13)
         new() { InputA="life",      InputB="beast",      ResultId="human"       },
         new() { InputA="human",     InputB="wood",       ResultId="tool"        },
         new() { InputA="human",     InputB="stone",      ResultId="tool"        },
@@ -192,7 +192,7 @@ public static class ElementData
         new() { InputA="paper",     InputB="fire",       ResultId="ash"         },
         new() { InputA="paper",     InputB="human",      ResultId="book"        },
 
-        // ── ЕДА (8) ───────────────────────────────────────────────────────
+        // ── ЕДА (8)
         new() { InputA="wheat",     InputB="fire",       ResultId="bread"       },
         new() { InputA="beast",     InputB="tool",       ResultId="meat"        },
         new() { InputA="fish",      InputB="fire",       ResultId="fish_dish"   },
@@ -202,7 +202,7 @@ public static class ElementData
         new() { InputA="milk",      InputB="fire",       ResultId="cheese"      },
         new() { InputA="salt",      InputB="fish",       ResultId="fish_dish"   },
 
-        // ── ТЕХНОЛОГИИ (7) ────────────────────────────────────────────────
+        // ── ТЕХНОЛОГИИ (7)
         new() { InputA="energy",    InputB="glass",      ResultId="light"       },
         new() { InputA="lightning", InputB="metal",      ResultId="electricity" },
         new() { InputA="electricity",InputB="metal",     ResultId="computer"    },
@@ -211,7 +211,7 @@ public static class ElementData
         new() { InputA="tool",      InputB="electricity",ResultId="robot"       },
         new() { InputA="electricity",InputB="glass",     ResultId="light"       },
 
-        // ── КОСМОС (6) ────────────────────────────────────────────────────
+        // ── КОСМОС (6)
         new() { InputA="fire",      InputB="energy",     ResultId="sun"         },
         new() { InputA="stone",     InputB="ice",        ResultId="moon"        },
         new() { InputA="energy",    InputB="stone",      ResultId="star"        },
@@ -219,7 +219,7 @@ public static class ElementData
         new() { InputA="planet",    InputB="star",       ResultId="universe"    },
         new() { InputA="sun",       InputB="planet",     ResultId="universe"    },
 
-        // ── ДОПОЛНИТЕЛЬНЫЕ РЕЦЕПТЫ (4) ────────────────────────────────────
+        // ── ДОПОЛНИТЕЛЬНЫЕ РЕЦЕПТЫ (4)
         new() { InputA="rain",      InputB="stone",      ResultId="clay"        },
         new() { InputA="fog",       InputB="sun",        ResultId="rainbow"     },
         new() { InputA="ice",       InputB="fire",       ResultId="water"       },

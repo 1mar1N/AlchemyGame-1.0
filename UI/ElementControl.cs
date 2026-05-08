@@ -12,21 +12,16 @@ namespace AlchemyGame.UI;
 
 public class ElementControl : Panel
 {
-    // ── Данные ────────────────────────────────────────────────────────────
     public WorkspaceElement WorkspaceElement { get; }
 
-    // ── Состояние drag ────────────────────────────────────────────────────
     private bool  _dragging;
     private Point _dragOffset;
 
-    // ── Состояние подсветки ───────────────────────────────────────────────
     private bool _highlighted;
 
-    // ── Шрифты (создаём один раз) ─────────────────────────────────────────
     private static readonly Font _emojiFont = new("Segoe UI Emoji", 22f);
     private static readonly Font _nameFont  = new("Segoe UI", 7.5f, FontStyle.Bold);
 
-    // ── Событие: перетаскивание завершено ────────────────────────────────
     public event Action<ElementControl>? DragEnded;
 
     public ElementControl(WorkspaceElement ws)
@@ -37,7 +32,6 @@ public class ElementControl : Panel
         BackColor = Color.Transparent;
         Cursor    = Cursors.Hand;
 
-        // Включаем двойной буфер — без него карточки мерцают при перетаскивании
         SetStyle(
             ControlStyles.OptimizedDoubleBuffer |
             ControlStyles.AllPaintingInWmPaint  |
@@ -50,7 +44,6 @@ public class ElementControl : Panel
         MouseUp   += OnMouseUp;
     }
 
-    // ── Подсветка (зелёная рамка при наложении другого элемента) ─────────
     public void SetHighlight(bool on)
     {
         if (_highlighted == on) return;
@@ -58,14 +51,13 @@ public class ElementControl : Panel
         Invalidate();
     }
 
-    // ── Drag & Drop ───────────────────────────────────────────────────────
 
     private void OnMouseDown(object? s, MouseEventArgs e)
     {
         if (e.Button != MouseButtons.Left) return;
         _dragging   = true;
         _dragOffset = e.Location;
-        Capture     = true; // захватываем мышь — события не теряются при выходе за границы
+        Capture     = true; 
         BringToFront();
         Invalidate();
     }
@@ -90,7 +82,6 @@ public class ElementControl : Panel
         DragEnded?.Invoke(this);
     }
 
-    // ── Отрисовка карточки ────────────────────────────────────────────────
 
     protected override void OnPaint(PaintEventArgs e)
     {
@@ -101,7 +92,6 @@ public class ElementControl : Panel
         var baseColor  = ParseHex(WorkspaceElement.Element.Color);
         var lightColor = Lighten(baseColor, 0.86f);
 
-        // Тень при перетаскивании
         if (_dragging)
         {
             using var shadow = new SolidBrush(Color.FromArgb(35, 0, 0, 0));
@@ -109,14 +99,12 @@ public class ElementControl : Panel
             g.FillPath(shadow, sp);
         }
 
-        // Фон карточки — светлый оттенок цвета элемента
         var cardRect = new Rectangle(2, 2, Width - 5, Height - 5);
         using var bgPath = BuildRoundRect(cardRect, 12);
         using var grad = new LinearGradientBrush(
             cardRect, Color.White, lightColor, LinearGradientMode.Vertical);
         g.FillPath(grad, bgPath);
 
-        // Рамка — зелёная при подсветке, иначе тонкая серая
         Color borderColor = _highlighted
             ? Color.FromArgb(29, 158, 117)
             : Color.FromArgb(45, 0, 0, 0);
@@ -124,17 +112,14 @@ public class ElementControl : Panel
         using var borderPen = new Pen(borderColor, borderW);
         g.DrawPath(borderPen, bgPath);
 
-        // Цветная полоска сверху — «подпись» категории
         using var accentBrush = new SolidBrush(Color.FromArgb(190, baseColor));
         g.FillRectangle(accentBrush, cardRect.X + 6, cardRect.Y, cardRect.Width - 12, 4);
 
-        // Эмодзи — по центру карточки
         var emoji    = WorkspaceElement.Element.Emoji;
         var emojiSz  = g.MeasureString(emoji, _emojiFont);
         g.DrawString(emoji, _emojiFont, Brushes.Black,
             (Width - emojiSz.Width) / 2f, 8f);
 
-        // Название — внизу, жирным мелким шрифтом
         var name   = WorkspaceElement.Element.Name;
         var nameSz = g.MeasureString(name, _nameFont);
         using var nameBrush = new SolidBrush(Color.FromArgb(65, 40, 40));
@@ -142,7 +127,6 @@ public class ElementControl : Panel
             (Width - nameSz.Width) / 2f, Height - 18f);
     }
 
-    // ── Вспомогательные методы ────────────────────────────────────────────
 
     private static GraphicsPath BuildRoundRect(Rectangle r, int radius)
     {

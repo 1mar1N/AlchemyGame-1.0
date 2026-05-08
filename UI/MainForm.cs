@@ -22,7 +22,6 @@ public class MainForm : Form
     {
         _game = new Game();
 
-        // ── Настройки окна ────────────────────────────────────────────────
         Text           = "✦ Алхимия";
         Size           = new Size(1000, 680);
         MinimumSize    = new Size(700, 500);
@@ -31,7 +30,6 @@ public class MainForm : Form
         DoubleBuffered = true;
         Icon           = SystemIcons.Application;
 
-        // ── Шапка ─────────────────────────────────────────────────────────
         var header = new Panel
         {
             Dock      = DockStyle.Top,
@@ -39,7 +37,6 @@ public class MainForm : Form
             BackColor = Color.White,
         };
 
-        // Линия-разделитель под шапкой
         var headerLine = new Panel
         {
             Dock      = DockStyle.Bottom,
@@ -48,7 +45,6 @@ public class MainForm : Form
         };
         header.Controls.Add(headerLine);
 
-        // Заголовок
         header.Controls.Add(new Label
         {
             Text      = "✦  Алхимия",
@@ -58,7 +54,6 @@ public class MainForm : Form
             AutoSize  = true,
         });
 
-        // Счётчик открытых элементов
         _discLabel = new Label
         {
             Text      = DiscText(),
@@ -68,11 +63,9 @@ public class MainForm : Form
         };
         header.Controls.Add(_discLabel);
 
-        // Кнопка "Очистить поле"
         var btnClear = MakeHeaderButton("Очистить поле");
         btnClear.Click += (_, _) => _workspace.ClearAll();
 
-        // Кнопка звука
         var btnSound = MakeHeaderButton("🔊 Звук: вкл");
         btnSound.Click += (_, _) =>
         {
@@ -83,7 +76,6 @@ public class MainForm : Form
         header.Controls.Add(btnClear);
         header.Controls.Add(btnSound);
 
-        // Позиционируем элементы шапки при изменении размера
         header.Resize += (_, _) =>
         {
             btnClear.Location  = new Point(header.Width - 130, 10);
@@ -91,16 +83,13 @@ public class MainForm : Form
             _discLabel.Location = new Point(header.Width / 2 - _discLabel.Width / 2, 14);
         };
 
-        // ── Инвентарь ─────────────────────────────────────────────────────
         _inventory = new InventoryPanel(_game);
         _inventory.ElementClicked += id => _workspace.SpawnElement(id);
 
-        // ── Рабочая область ───────────────────────────────────────────────
         _workspace = new WorkspacePanel(_game) { Dock = DockStyle.Fill };
         _workspace.CraftHappened      += OnCraftHappened;
         _workspace.NewElementUnlocked += OnNewElementUnlocked;
 
-        // ── Подсказка при старте ──────────────────────────────────────────
         var hint = new Label
         {
             Text      = "Нажмите на элемент в инвентаре снизу, чтобы добавить его на поле\n" +
@@ -114,7 +103,6 @@ public class MainForm : Form
         _workspace.Controls.Add(hint);
         _inventory.ElementClicked += _ => hint.Visible = false;
 
-        // ── Toast-уведомление ─────────────────────────────────────────────
         _toast = new Panel
         {
             Size      = new Size(300, 34),
@@ -141,13 +129,11 @@ public class MainForm : Form
 
         _workspace.Resize += (_, _) => PositionToast();
 
-        // ── Компоновка ────────────────────────────────────────────────────
         Controls.Add(_workspace);
         Controls.Add(_inventory);
         Controls.Add(header);
     }
 
-    // ── Обработка событий крафта ─────────────────────────────────────────
 
     private void OnCraftHappened(string resultName, bool isNew)
     {
@@ -162,10 +148,9 @@ public class MainForm : Form
         _inventory.MarkNew(_game.LastUnlockedId);
         _inventory.Refresh();
         _discLabel.Text = DiscText();
-        PositionToast(); // toast теперь поверх нового инвентаря
+        PositionToast(); 
     }
 
-    // ── Toast ─────────────────────────────────────────────────────────────
 
     private void ShowToast(string text)
     {
@@ -185,7 +170,6 @@ public class MainForm : Form
             (_workspace.Height - _toast.Height) / 2 - 50);
     }
 
-    // ── Вспомогательные методы ───────────────────────────────────────────
 
     private string DiscText() =>
         $"Открыто: {_game.DiscoveredCount} / {_game.TotalElements}";

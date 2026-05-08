@@ -15,9 +15,8 @@ public class InventoryPanel : Panel
 {
     private readonly Game            _game;
     private readonly FlowLayoutPanel _flow;
-    private readonly HashSet<string> _newIds = new(); // элементы, помеченные "NEW!"
+    private readonly HashSet<string> _newIds = new(); 
 
-    /// <summary>Вызывается при клике на элемент в инвентаре, передаёт Id элемента</summary>
     public event Action<string>? ElementClicked;
 
     public InventoryPanel(Game game)
@@ -27,7 +26,6 @@ public class InventoryPanel : Panel
         Dock      = DockStyle.Bottom;
         BackColor = Color.White;
 
-        // Линия-разделитель сверху
         var topLine = new Panel
         {
             Dock      = DockStyle.Top,
@@ -35,7 +33,6 @@ public class InventoryPanel : Panel
             BackColor = Color.FromArgb(218, 218, 212),
         };
 
-        // Заголовок "ИНВЕНТАРЬ"
         var titlePanel = new Panel
         {
             Dock      = DockStyle.Top,
@@ -51,7 +48,6 @@ public class InventoryPanel : Panel
             AutoSize  = true,
         });
 
-        // Горизонтальный поток кнопок с прокруткой
         _flow = new FlowLayoutPanel
         {
             Dock          = DockStyle.Fill,
@@ -61,7 +57,6 @@ public class InventoryPanel : Panel
             Padding       = new Padding(6, 2, 6, 4),
             BackColor     = Color.Transparent,
         };
-        // Скрываем горизонтальный скроллбар (оставляем только полосу прокрутки)
         _flow.HorizontalScroll.Visible = false;
 
         Controls.Add(_flow);
@@ -82,12 +77,10 @@ public class InventoryPanel : Panel
                 true);
         }
     }
-    /// <summary>Полностью перестраивает список кнопок. Вызвать после изменения инвентаря.</summary>
     public new void Refresh()
     {
         _flow.SuspendLayout();
 
-        // Очищаем только кнопки, не трогая вложенные панели
         foreach (Control c in _flow.Controls)
             c.Dispose();
         _flow.Controls.Clear();
@@ -98,16 +91,13 @@ public class InventoryPanel : Panel
         _flow.ResumeLayout();
     }
 
-    /// <summary>Помечает элемент как "NEW!" при следующем Refresh</summary>
     public void MarkNew(string elementId) => _newIds.Add(elementId);
 
-    // ── Создание карточки ────────────────────────────────────────────────
 
     private Control MakeCard(Element el)
     {
         bool isNew = _newIds.Contains(el.Id);
 
-        // Рисуем через Panel + OnPaint (кнопка не может нарисовать то, что нам нужно)
         var card = new CardPanel()
         {
             Width     = 70,
@@ -131,7 +121,6 @@ public class InventoryPanel : Panel
             ElementClicked?.Invoke(el.Id);
         };
 
-        // "NEW!" исчезает через 5 секунд
         if (isNew)
         {
             var t = new System.Windows.Forms.Timer { Interval = 5000 };
@@ -156,37 +145,31 @@ public class InventoryPanel : Panel
 
         var rect = new Rectangle(1, 1, card.Width - 2, card.Height - 4);
 
-        // Фон
         using var bgPath = RoundRect(rect, 10);
         Color bg = hovered ? Color.White : Color.FromArgb(248, 248, 244);
         using var bgBrush = new SolidBrush(bg);
         g.FillPath(bgBrush, bgPath);
 
-        // Рамка
         Color borderColor = isNew
             ? Color.FromArgb(29, 158, 117)
             : Color.FromArgb(hovered ? 60 : 30, 0, 0, 0);
         using var borderPen = new Pen(borderColor, isNew ? 1.5f : 1f);
         g.DrawPath(borderPen, bgPath);
 
-        // Цветная точка-категория
         using var dot = new SolidBrush(Color.FromArgb(160, baseColor));
         g.FillEllipse(dot, rect.Right - 12, rect.Top + 5, 7, 7);
 
-        // Эмодзи
         using var emojiFont = new Font("Segoe UI Emoji", 20f);
         var emojiSz = g.MeasureString(el.Emoji, emojiFont);
         g.DrawString(el.Emoji, emojiFont, Brushes.Black,
             (card.Width - emojiSz.Width) / 2f, 8f);
 
-        // Название
         using var nameFont  = new Font("Segoe UI", 7f, FontStyle.Bold);
         using var nameBrush = new SolidBrush(Color.FromArgb(70, 50, 50));
         var nameSz = g.MeasureString(el.Name, nameFont);
         g.DrawString(el.Name, nameFont, nameBrush,
             (card.Width - nameSz.Width) / 2f, card.Height - 20f);
 
-        // "NEW!" бейдж
         if (isNew)
         {
             using var badgeBrush = new SolidBrush(Color.FromArgb(29, 158, 117));
@@ -200,7 +183,6 @@ public class InventoryPanel : Panel
         }
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────
 
     private static GraphicsPath RoundRect(Rectangle r, int d)
     {

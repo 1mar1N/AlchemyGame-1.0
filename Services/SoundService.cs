@@ -12,57 +12,49 @@ using System.Threading.Tasks;
 
 public static class SoundService
 {
-    /// <summary>Выключить звук (для настроек)</summary>
     public static bool Enabled { get; set; } = true;
 
-    // ── Публичные методы ─────────────────────────────────────────────────
 
-    /// <summary>Мягкий pop при добавлении элемента на поле</summary>
     public static void PlaySpawn()
     {
         if (!Enabled) return;
-        PlayAsync(() => PlayTone(392, 60, 0.25)); // G4, тихий, короткий
+        PlayAsync(() => PlayTone(392, 60, 0.25)); 
     }
 
-    /// <summary>Двухнотный звук при успешном крафте</summary>
     public static void PlayCraft()
     {
         if (!Enabled) return;
         PlayAsync(() =>
         {
-            PlayTone(440, 90, 0.40);  // A4
+            PlayTone(440, 90, 0.40);  
             Thread.Sleep(70);
-            PlayTone(554, 110, 0.40); // C#5
+            PlayTone(554, 110, 0.40); 
         });
     }
 
-    /// <summary>Торжественный аккорд при открытии нового элемента</summary>
     public static void PlayNewDiscovery()
     {
         if (!Enabled) return;
         PlayAsync(() =>
         {
-            PlayTone(523, 100, 0.50);  // C5
+            PlayTone(523, 100, 0.50);  
             Thread.Sleep(75);
-            PlayTone(659, 100, 0.50);  // E5
+            PlayTone(659, 100, 0.50); 
             Thread.Sleep(75);
-            PlayTone(784, 140, 0.55);  // G5
+            PlayTone(784, 140, 0.55); 
             Thread.Sleep(110);
-            PlayTone(1047, 200, 0.45); // C6 — финальная высокая нота
+            PlayTone(1047, 200, 0.45); 
         });
     }
 
-    // ── Внутренние методы ─────────────────────────────────────────────────
 
-    /// <summary>Запускает воспроизведение в пуле потоков, не блокируя UI</summary>
     private static void PlayAsync(Action action)
         => Task.Run(() =>
         {
             try { action(); }
-            catch { /* игнорируем ошибки звука */ }
+            catch {}
         });
 
-    /// <summary>Воспроизводит один синусоидальный тон</summary>
     private static void PlayTone(int frequencyHz, int durationMs, double volume)
     {
         using var stream = BuildWav(frequencyHz, durationMs, volume);
@@ -70,11 +62,6 @@ public static class SoundService
         player.PlaySync();
     }
 
-    /// <summary>
-    /// Генерирует WAV-файл в памяти.
-    /// Формат: PCM 16-bit, моно, 44100 Гц.
-    /// Огибающая: атака 10% + поддержка 60% + спад 30%.
-    /// </summary>
     private static MemoryStream BuildWav(int freq, int durationMs, double volume)
     {
         const int sampleRate = 44100;
@@ -83,22 +70,19 @@ public static class SoundService
         var stream = new MemoryStream(44 + totalSamples * 2);
         using var w = new BinaryWriter(stream, Encoding.ASCII, leaveOpen: true);
 
-        // ── RIFF-заголовок ────────────────────────────────────────────────
         w.Write(Encoding.ASCII.GetBytes("RIFF"));
-        w.Write(36 + totalSamples * 2);          // размер всего файла − 8
+        w.Write(36 + totalSamples * 2);          
         w.Write(Encoding.ASCII.GetBytes("WAVE"));
 
-        // ── fmt-чанк (описание формата) ───────────────────────────────────
         w.Write(Encoding.ASCII.GetBytes("fmt "));
-        w.Write(16);                              // размер чанка fmt
-        w.Write((short)1);                        // PCM = 1
-        w.Write((short)1);                        // каналы: моно
-        w.Write(sampleRate);                      // частота дискретизации
-        w.Write(sampleRate * 2);                  // байт в секунду
-        w.Write((short)2);                        // блок выравнивания
-        w.Write((short)16);                       // бит на сэмпл
+        w.Write(16);                              
+        w.Write((short)1);                        
+        w.Write((short)1);                        
+        w.Write(sampleRate);                     
+        w.Write(sampleRate * 2);                  
+        w.Write((short)2);                       
+        w.Write((short)16);                       
 
-        // ── data-чанк (сами сэмплы) ───────────────────────────────────────
         w.Write(Encoding.ASCII.GetBytes("data"));
         w.Write(totalSamples * 2);
 
@@ -107,7 +91,6 @@ public static class SoundService
 
         for (int i = 0; i < totalSamples; i++)
         {
-            // Огибающая: плавный старт и конец
             double env = i < attackEnd
                 ? i / attackEnd
                 : i > sustainEnd

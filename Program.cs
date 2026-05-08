@@ -13,12 +13,10 @@ static class Program
     [STAThread]
     static void Main()
     {
-        // Включаем современные визуальные стили Windows
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
         ApplicationConfiguration.Initialize();
 
-        // Запускаем главное окно
         Application.Run(new MainForm());
     }
 }
