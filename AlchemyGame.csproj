@@ -1,0 +1,21 @@
+<!--
+  AlchemyGame.csproj
+  ==================
+  Файл проекта .NET 6 + WinForms.
+  Запускает приложение как Windows GUI (WinExe).
+  Без внешних NuGet-пакетов — только стандартная библиотека .NET.
+
+  Запуск:  dotnet run
+  Сборка:  dotnet build
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>AlchemyGame</AssemblyName>
+    <RootNamespace>AlchemyGame</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+</Project>
